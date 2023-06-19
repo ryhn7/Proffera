@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Proffera</string>
+    <string name="placeholder_search">Cari Proyek!</string>
+    <string name="menu_home">Home</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_home_description">tes</string>
+    <string name="drawer_profile">Profile</string>
+    <string name="drawer_profile_description">Profile</string>
+    <string name="menu">Menu</string>
+    <string name="drawer_logout">Logout</string>
+    <string name="drawer_logout_description">logout</string>
+    <string name="drawer_bookmarks">Bookmarks</string>
+    <string name="drawer_bookmarks_description">Bookmarks</string>
+    <string name="drawer_history">History</string>
+    <string name="drawer_history_description">History</string>
+    <string name="header_wording">Cari Proyek yang Anda Inginkan di Sini</string>
+    <string name="project_picture">Project Picture</string>
+    <string name="hide_password">hide password</string>
+    <string name="show_password">show password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+</resources>
