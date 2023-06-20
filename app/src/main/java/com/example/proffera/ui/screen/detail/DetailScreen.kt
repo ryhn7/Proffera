@@ -117,7 +117,7 @@ fun DetailContent(
                     contentAlignment = Alignment.TopStart
                 ) {
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = onBackClick,
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,

@@ -4,8 +4,12 @@ import android.app.Activity
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,24 +18,24 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.proffera.R
-import com.example.proffera.ui.components.ButtonComponent
-import com.example.proffera.ui.components.EmailForm
-import com.example.proffera.ui.components.ErrorMessage
-import com.example.proffera.ui.components.PasswordForm
-import com.example.proffera.ui.theme.Dark
-import com.example.proffera.ui.theme.DarkBlue
+import com.example.proffera.ui.components.*
+import com.example.proffera.ui.theme.*
 
 
 val LocalBackPressedDispatcher =
@@ -60,7 +64,7 @@ fun LoginScreen(
 
 
 @Composable
-fun LoginContent(viewModel: LoginViewModel, navController: NavController) {
+fun LoginContent(viewModel: LoginViewModel , navController: NavController) {
     val state = viewModel.state
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -144,6 +148,72 @@ fun LoginContent(viewModel: LoginViewModel, navController: NavController) {
     ) {
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.size(50.dp), color = DarkBlue)
+        }
+    }
+}
+
+@Composable
+fun LoginContentTemp() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = WhiteSmoke)
+    ) {
+        Card(shape = RoundedCornerShape(bottomStart = 120.dp)) {
+            Box(
+                modifier = Modifier
+                    .height(320.dp)
+                    .background(color = OtterBrown),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(400.dp)
+                        .aspectRatio(1f)
+                        .scale(0.80f)
+                        .background(color = MetallicBronze, shape = CircleShape)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(400.dp)
+                            .aspectRatio(1f)
+                            .scale(0.83f)
+                            .background(color = Oil, shape = CircleShape)
+                    ) {
+                    }
+                }
+                Box(
+                    modifier = Modifier.size(200.dp),
+                    contentAlignment = Alignment.Center,
+                    content = {
+                        // Round logo in the center
+                        Image(
+                            painter = painterResource(R.drawable.logo_proffera),
+                            contentDescription = "Logo",
+                        )
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+        EmailForm2(
+            value = "",
+        )
+        PasswordForm2(
+            value = "",
+            isPasswordVisible = true,
+        )
+
+    }
+}
+
+@Composable
+@Preview(showBackground = true, device = Devices.PIXEL_4)
+fun LoginScreenPreview() {
+    ProfferaTheme() {
+        Surface(color = WhiteSmoke) {
+            LoginContentTemp()
         }
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proffera.R
 import com.example.proffera.ui.theme.*
+import java.math.BigDecimal
 
 @Composable
 fun HomeProcurement(
@@ -180,12 +181,25 @@ fun HomeProcurement(
 }
 
 fun formatProjectCost(cost: String): String {
-    val costValue = cost.toIntOrNull() ?: 0
+    val costValue = cost.toBigDecimalOrNull() ?: BigDecimal.ZERO
 
     return when {
-        costValue > 1_000_000_000 -> "Rp.${(costValue / 1_000_000_000)}t"
-        costValue > 100_000_000 -> "Rp.${(costValue / 100_000_000)}jt"
-        costValue > 10_000_000 -> "Rp.${(costValue / 10_000_000)}jt"
+        costValue > BigDecimal("10000000000") -> {
+            val billionValue = costValue.divide(BigDecimal("1000000000"))
+            "Rp.${billionValue}m"
+        }
+        costValue >= BigDecimal("1000000000") -> {
+            val billionValue = costValue.divide(BigDecimal("1000000000"))
+            "Rp.${billionValue}m"
+        }
+        costValue >= BigDecimal("100000000") -> {
+            val millionValue = costValue.divide(BigDecimal("1000000"))
+            "Rp.${millionValue}jt"
+        }
+        costValue >= BigDecimal("10000000") -> {
+            val millionValue = costValue.divide(BigDecimal("1000000"))
+            "Rp.${millionValue}jt"
+        }
         else -> "Rp.$costValue"
     }
 }

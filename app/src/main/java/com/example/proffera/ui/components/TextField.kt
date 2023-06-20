@@ -4,10 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +15,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proffera.ui.theme.DarkBlue
 import com.example.proffera.ui.theme.ProfferaTheme
+import com.example.proffera.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfferaTextField(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        contentColorFor(backgroundColor = White),
         cursorColor = Color.Black,
         disabledLabelColor = Color.Gray,
         focusedIndicatorColor = Color.Transparent,
@@ -51,7 +50,8 @@ fun ProfferaTextField(
 ) {
     TextField(
         modifier = modifier,
-        colors = if(enabled.not()) TextFieldDefaults.textFieldColors(
+        colors = if(enabled.not()) TextFieldDefaults.colors(
+            contentColorFor(backgroundColor = White),
             cursorColor = DarkBlue,
             disabledLabelColor = DarkBlue,
             focusedIndicatorColor = Color.Transparent,
