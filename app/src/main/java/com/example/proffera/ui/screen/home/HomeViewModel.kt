@@ -34,6 +34,21 @@ class HomeViewModel @Inject constructor(
                 }
         }
     }
+
+    fun searchProcurements(searchQuery: String) {
+        viewModelScope.launch {
+            _procurementsState.value = UiState.Loading
+            profferaRepo.searchProcurements(searchQuery)
+                .collect { result ->
+                    result.onSuccess { procurementResponse ->
+                        _procurementsState.value = UiState.Success(procurementResponse.data)
+                    }
+                    result.onFailure {
+                        _procurementsState.value = UiState.Error(it.message ?: "An error occurred")
+                    }
+                }
+        }
+    }
 }
 
 

@@ -51,6 +51,13 @@ fun HomeScreen(
 
     val context = LocalContext.current
 
+    val searchQuery = remember { mutableStateOf("") }
+
+    fun searchProcurements() {
+        viewModel.searchProcurements(searchQuery.value)
+    }
+
+
     LaunchedEffect(scrollState) {
         snapshotFlow { scrollState.firstVisibleItemIndex }
             .collect { currentIndex ->
@@ -87,7 +94,10 @@ fun HomeScreen(
                         HomeScreenContent(
                             listProcurement = uiState.data,
                             scrollState = scrollState,
-                            onClickDetail = navigateToDetail
+                            onClickDetail = navigateToDetail,
+                            searchQuery = searchQuery.value,
+                            onSearchQueryChanged = { newQuery -> searchQuery.value = newQuery },
+                            onSearchPerform = { searchProcurements() }
                         )
                     }
                     is UiState.Error -> {
@@ -105,6 +115,9 @@ fun HomeScreenContent(
     listProcurement: List<DataItem>,
     scrollState: LazyListState,
     onClickDetail: (String) -> Unit = {},
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    onSearchPerform: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -123,7 +136,12 @@ fun HomeScreenContent(
                     .width(230.dp)
                     .padding(top = 56.dp)
             )
-            Search(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp))
+            Search(
+                searchQuery = searchQuery,
+                onSearchQueryChanged = onSearchQueryChanged,
+                onSearchPerform = onSearchPerform,
+                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+            )
         }
         items(listProcurement) { procurement ->
             HomeProcurement(

@@ -6,16 +6,32 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.example.proffera.ui.theme.ProfferaTheme
-import com.example.proffera.ui.theme.WhiteSmoke
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun Search(modifier: Modifier = Modifier) {
-    SearchBar(query = "", onQueryChange = {}, onSearch = {}, active = false, onActiveChange = {},
+fun Search(
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    onSearchPerform: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    SearchBar(
+        query = searchQuery,
+        onQueryChange = { newQuery ->
+            onSearchQueryChanged(newQuery)
+        },
+        onSearch = {
+            onSearchPerform()
+            keyboardController?.hide() // Hide the software keyboard after performing the search
+        },
+        active = false, // The active state can be handled externally
+        onActiveChange = {}, // The active state change can be handled externally
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
@@ -33,17 +49,17 @@ fun Search(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp)
-    ) {
+    ){
 
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SearchPreview() {
-    ProfferaTheme {
-        Surface(color = WhiteSmoke) {
-            Search()
-        }
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun SearchPreview() {
+//    ProfferaTheme {
+//        Surface(color = WhiteSmoke) {
+//            Search()
+//        }
+//    }
+//}
