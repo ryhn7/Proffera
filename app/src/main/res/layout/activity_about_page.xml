@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.screen.AboutPage">
+
+    <ImageView
+        android:id="@+id/iv_about"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:foreground="@drawable/gradient_about_page"
+        android:src="@drawable/rayhan2"
+        android:contentDescription="@string/img" />
+
+    <!--    make button back in top left corner     -->
+    <Button
+        android:id="@+id/btn_about_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/detail_button_top"
+        android:contentDescription="@string/back_button"
+        android:drawableStart="@drawable/baseline_arrow_back_ios_new_24"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/tv_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="280dp"
+        android:fontFamily="@font/n_sans_bold"
+        android:text="@string/about"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:gravity="bottom"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_about_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="260dp"
+        android:fontFamily="@font/n_sans_sb"
+        android:text="@string/about_email"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <!--    TExt view for quote     -->
+    <TextView
+        android:id="@+id/tv_about_quote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dp"
+        android:fontFamily="@font/n_sans_sb"
+        android:text="@string/about_quote"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_follow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_about_page"
+        android:fontFamily="@font/n_sans_sb"
+        android:text="@string/about_button"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+
+
+</RelativeLayout>

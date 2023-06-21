@@ -91,7 +91,7 @@ private fun CircleImage(onClick: () -> Unit) {
     // Replace this with your own implementation of the circle image
     IconButton(onClick = onClick) {
         Image(
-            painter = painterResource(id = R.drawable.ic_profile),
+            painter = painterResource(id = R.drawable.rayhan2),
             contentDescription = stringResource(id = R.string.project_picture),
             contentScale = ContentScale.Crop,
             modifier = Modifier

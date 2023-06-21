@@ -1,7 +1,10 @@
 package com.example.proffera.ui.screen.home
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,6 +29,7 @@ import com.example.proffera.ui.common.UiState
 import com.example.proffera.ui.components.HomeProcurement
 import com.example.proffera.ui.components.Search
 import com.example.proffera.ui.components.appbar.AppBar
+import com.example.proffera.ui.screen.AboutPage
 import com.example.proffera.ui.theme.WhiteSmoke
 
 @Composable
@@ -37,6 +42,14 @@ fun HomeScreen(
 
     val isScrolling = remember { mutableStateOf(false) }
     val lastOffset = remember { mutableStateOf(0) }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        // Handle the result if needed
+    }
+
+    val context = LocalContext.current
 
     LaunchedEffect(scrollState) {
         snapshotFlow { scrollState.firstVisibleItemIndex }
@@ -51,7 +64,11 @@ fun HomeScreen(
         topBar = {
             if (!isScrolling.value) {
                 AppBar(
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    onProfileClick = {
+                        val intent = Intent(context, AboutPage::class.java)
+                        launcher.launch(intent)
+                    }
                 )
             }
         }

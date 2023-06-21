@@ -20,4 +20,10 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="about_button">Follow Rayhan</string>
+    <string name="about_quote">“Intelligence is a privilege, and it needs to be used for the greater good of people.” \n- Dr. Otto Octavius</string>
+    <string name="about_email">rayhan20532@gmail.com</string>
+    <string name="back_button">back</string>
+    <string name="about">Rayhan Illyas Annabil</string>
+    <string name="img">img</string>
 </resources>
