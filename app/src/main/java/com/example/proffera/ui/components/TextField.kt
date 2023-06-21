@@ -7,17 +7,15 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.proffera.ui.theme.ProfferaTheme
 import com.example.proffera.ui.theme.White
-
 
 @Composable
 fun ProfferaTextField(
@@ -30,8 +28,6 @@ fun ProfferaTextField(
     ),
     value: String = "",
     onValueChange: (String) -> Unit = {},
-    placeholder: @Composable () -> Unit = {},
-    label: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = true,
@@ -43,7 +39,6 @@ fun ProfferaTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     minLines: Int = 1,
     maxLines: Int = 1,
-    isError: Boolean = false,
     enabled: Boolean = true,
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
@@ -55,8 +50,13 @@ fun ProfferaTextField(
             Row(modifier = Modifier.background(White).padding(16.dp)) {
                 leadingIcon?.invoke()
                 Spacer(Modifier.width(16.dp))
-                placeholder.invoke()
-                innerTextField()
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    innerTextField()
+                }
+                trailingIcon?.invoke()
             }
         },
         maxLines = maxLines,
@@ -68,23 +68,4 @@ fun ProfferaTextField(
         keyboardOptions = keyboardOptions,
         singleLine = singleLine,
     )
-
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TextFieldPreviews() {
-    ProfferaTheme() {
-        var text by remember {
-            mutableStateOf("")
-        }
-        ProfferaTextField(
-            value = text,
-            onValueChange = { text = it },
-            placeholder = {},
-            label = {},
-            isError = true,
-        )
-    }
 }
