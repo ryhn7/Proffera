@@ -33,6 +33,11 @@ fun NavGraphBuilder.mainGraph(drawerState: DrawerState, navController: NavContro
                 navigateBack = {
                     navController.navigateUp()
                 },
+                onApplyClick = {
+                },
+                onDownloadClick = {
+
+                }
             )
 
         }

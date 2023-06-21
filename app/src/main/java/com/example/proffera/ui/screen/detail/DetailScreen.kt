@@ -1,7 +1,9 @@
 package com.example.proffera.ui.screen.detail
 
 import android.content.ContentValues
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -36,6 +39,8 @@ fun DetailScreen(
     projectId: String,
     viewModel: DetailViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
+    onApplyClick: () -> Unit,
+    onDownloadClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -61,8 +66,8 @@ fun DetailScreen(
                         "Tinggi",
                         "Dalam Review",
                         onBackClick = navigateBack,
-                        onApplyClick = {},
-                        onDownloadClick = {},
+                        onApplyClick = onApplyClick,
+                        onDownloadClick = onDownloadClick,
                     )
                 }
                 is UiState.Error -> {
@@ -91,6 +96,7 @@ fun DetailContent(
     onDownloadClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -320,12 +326,17 @@ fun DetailContent(
                         DownloadButton(
                             onClick = {
                                 onDownloadClick()
-                            }, modifier = Modifier.padding(start = 25.dp, top = 4.dp)
+                                showToast(context, "Download juknis berhasil")
+                            },
+                            modifier = Modifier.padding(start = 25.dp, top = 4.dp)
                         )
                         ApplyButton(
-                            text = "Daftar", onClick = {
+                            text = "Daftar",
+                            onClick = {
                                 onApplyClick()
-                            }, modifier = Modifier.padding(start = 32.dp, end = 25.dp)
+                                showToast(context, "Daftar proyek berhasil")
+                            },
+                            modifier = Modifier.padding(start = 32.dp, end = 25.dp)
                         )
                     }
                 }
@@ -358,7 +369,10 @@ fun DetailContent(
             }
         }
     }
+}
 
+private fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 
