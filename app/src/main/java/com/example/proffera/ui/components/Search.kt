@@ -49,9 +49,7 @@ fun Search(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp)
-    ){
-
-    }
+    ){}
 }
 
 //@Preview(showBackground = true)

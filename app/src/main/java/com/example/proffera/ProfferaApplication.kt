@@ -122,19 +122,19 @@ object DrawerParams {
         AppDrawerItemInfo(
             MainScreen.HomeScreen,
             R.string.drawer_home,
-            R.drawable.ic_info,
+            R.drawable.ic_home,
             R.string.drawer_home_description
         ),
-        AppDrawerItemInfo(
-            MainScreen.ProfileScreen,
-            R.string.drawer_bookmarks,
-            R.drawable.ic_info,
-            R.string.drawer_bookmarks_description
-        ),
+//        AppDrawerItemInfo(
+//            MainScreen.ProfileScreen,
+//            R.string.drawer_bookmarks,
+//            R.drawable.ic_info,
+//            R.string.drawer_bookmarks_description
+//        ),
         AppDrawerItemInfo(
             MainScreen.Logout,
             R.string.drawer_logout,
-            R.drawable.ic_info,
+            R.drawable.ic_logout,
             R.string.drawer_logout_description
         ),
     )

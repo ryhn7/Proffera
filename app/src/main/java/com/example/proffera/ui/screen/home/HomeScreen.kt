@@ -89,6 +89,7 @@ fun HomeScreen(
                 when (uiState) {
                     is UiState.Loading -> {
                         viewModel.getAllProcurements()
+                        viewModel.searchProcurements(searchQuery.value)
                     }
                     is UiState.Success -> {
                         HomeScreenContent(
@@ -152,6 +153,7 @@ fun HomeScreenContent(
                 projectDescription = procurement.data.description ?: "",
                 projectStatus = "Dalam Review",
                 projectDuration = "6 Bulan",
+                onBookmarkClick = {},
                 modifier = Modifier
                     .clickable {
                         Log.d(TAG, "HomeScreenContent: ${procurement.id}")

@@ -2,14 +2,16 @@ package com.example.proffera.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,8 +35,10 @@ fun HomeProcurement(
     projectDescription: String,
     projectStatus: String,
     projectDuration: String,
+    onBookmarkClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isBookmarked by remember { mutableStateOf(false) }
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
@@ -84,12 +88,17 @@ fun HomeProcurement(
                     }
                 }
                 Icon(
-                    imageVector = Icons.Default.BookmarkBorder,
+                    imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                     contentDescription = "Icon bookmark",
+                    tint = if (isBookmarked) Color.Red else Color.Unspecified,
                     modifier = Modifier
                         .height(24.dp)
                         .weight(1f) // Added weight modifier
                         .wrapContentWidth(Alignment.End)
+                        .clickable { // Handle bookmark click event
+                            isBookmarked = !isBookmarked
+                            onBookmarkClick()
+                        }
                 )
             }
 //            unknown and price
