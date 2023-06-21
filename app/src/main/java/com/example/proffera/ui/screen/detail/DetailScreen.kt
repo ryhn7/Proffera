@@ -18,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -155,11 +154,6 @@ fun DetailContent(
                             style = MaterialTheme.typography.titleSmall,
                             color = LightGray,
                         )
-                        Text(
-                            text = "Prediksi potensi kecurangan: 50.8%",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = DarkOrange,
-                        )
                     }
                 }
                 Box(
@@ -260,7 +254,7 @@ fun DetailContent(
                                 modifier = Modifier.padding(start = 25.dp, end = 8.dp)
                             )
                             Text(
-                                text = projectContractPrice,
+                                text = "Rp. $projectContractPrice",
                                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                                 modifier = Modifier.padding(end = 25.dp)
                             )

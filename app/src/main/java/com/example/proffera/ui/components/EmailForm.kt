@@ -17,55 +17,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.proffera.ui.theme.ProfferaTheme
 
 @Composable
 fun EmailForm(
     modifier: Modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 16.dp),
-    value: String,
-    onValueChange: (String) -> Unit,
-    imageVector: ImageVector = Icons.Filled.Email,
-    label: String = "Email",
-    placeholder: String = "Email",
-    keyboardOptions: KeyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Email,
-        imeAction = ImeAction.Next
-    ),
-) {
-    ProfferaTextField(
-        modifier = modifier,
-        value = value,
-        onValueChange = onValueChange,
-        leadingIcon = {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = null
-            )
-        },
-        label = {
-            Text(label)
-        },
-        placeholder = {
-            Text(placeholder)
-        },
-        singleLine = true,
-        keyboardOptions = keyboardOptions
-    )
-}
-
-@Composable
-fun EmailForm2(
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
         .padding(horizontal = 24.dp, vertical = 16.dp),
     value: String,
     imageVector: ImageVector = Icons.Filled.Email,
-    label: String = "Email",
-    placeholder: String = "Email",
+    onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
         imeAction = ImeAction.Next
@@ -84,28 +45,25 @@ fun EmailForm2(
         ProfferaTextField(
             modifier = Modifier.fillMaxSize(), // Take the available space inside the box
             value = value,
+            onValueChange = onValueChange,
             leadingIcon = {
                 Icon(
                     imageVector = imageVector,
                     contentDescription = null,
-                )
-            },
-            placeholder = {
-                Text(
-                    text = placeholder,
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    tint = Color.Gray
                 )
             },
             singleLine = true,
             keyboardOptions = keyboardOptions
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EmailPreviews() {
-    ProfferaTheme {
-        EmailForm2(value = "Email")
+        if (value.isEmpty()) {
+            Text(
+                text = "Email",
+                color = Color.Gray,
+                modifier = Modifier
+                    .padding(start = 50.dp)
+                    .align(Alignment.CenterStart)
+            )
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.proffera.ui.screen.login
 
 import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -11,31 +13,22 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.proffera.R
-import com.example.proffera.ui.components.*
+import com.example.proffera.ui.components.ButtonComponent
+import com.example.proffera.ui.components.EmailForm
+import com.example.proffera.ui.components.PasswordForm
 import com.example.proffera.ui.theme.*
+import kotlinx.coroutines.launch
 
 
 val LocalBackPressedDispatcher =
@@ -58,102 +51,15 @@ fun LoginScreen(
             }
         }
 
-        LoginContent(viewModel, navController)
+        LoginContent(viewModel, navController, LocalContext.current)
     }
 }
 
 
 @Composable
-fun LoginContent(viewModel: LoginViewModel , navController: NavController) {
+fun LoginContent(viewModel: LoginViewModel , navController: NavController, context: Context = LocalContext.current) {
     val state = viewModel.state
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(28.dp)
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-
-                Text(
-                    text = "Login",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 40.dp),
-                    style = TextStyle(
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontStyle = FontStyle.Normal
-                    ), color = Dark,
-                    textAlign = TextAlign.Center
-                )
-
-                Text(
-                    text = "Welcome",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 40.dp),
-                    style = TextStyle(
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontStyle = FontStyle.Normal
-                    ), color = Dark,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-
-                EmailForm(
-                    value = state.email,
-                    onValueChange = viewModel::onEmailChange
-                )
-
-
-                PasswordForm(
-                    value = state.password,
-                    onValueChange = viewModel::onPasswordChange,
-                    isPasswordVisible = state.isPasswordVisible,
-                    onPasswordVisibilityChange = viewModel::onPasswordVisibilityChange,
-                )
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                ButtonComponent(
-                    value = stringResource(id = R.string.login),
-                    onClick = {
-                        viewModel.login(navController)
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                state.error?.let {
-                    ErrorMessage(text = it)
-                }
-            }
-        }
-    }
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        if (state.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.size(50.dp), color = DarkBlue)
-        }
-    }
-}
-
-@Composable
-fun LoginContentTemp() {
+    val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -197,23 +103,49 @@ fun LoginContentTemp() {
         }
 
         Spacer(modifier = Modifier.height(32.dp))
-        EmailForm2(
-            value = "",
-        )
-        PasswordForm2(
-            value = "",
-            isPasswordVisible = true,
+
+        EmailForm(
+            value = state.email,
+            onValueChange = viewModel::onEmailChange
         )
 
+        PasswordForm(
+            value = state.password,
+            onValueChange = viewModel::onPasswordChange,
+            isPasswordVisible = state.isPasswordVisible,
+            onPasswordVisibilityChange = viewModel::onPasswordVisibilityChange,
+        )
+
+        Spacer(modifier = Modifier.height(100.dp))
+
+        ButtonComponent(
+            value = stringResource(id = R.string.login),
+            onClick = {
+                viewModel.login(navController)
+            }
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        LaunchedEffect(state.error) {
+            state.error?.let { errorMessage ->
+                coroutineScope.launch {
+                    Toast.makeText(
+                        context,
+                        errorMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
-}
 
-@Composable
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-fun LoginScreenPreview() {
-    ProfferaTheme() {
-        Surface(color = WhiteSmoke) {
-            LoginContentTemp()
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (state.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.size(50.dp), color = DarkBlue)
         }
     }
 }
