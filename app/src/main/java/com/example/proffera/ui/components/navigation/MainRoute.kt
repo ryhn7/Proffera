@@ -8,9 +8,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.example.proffera.NavRoutes
+import com.example.proffera.ui.screen.bookmarks.BookmarksScreen
 import com.example.proffera.ui.screen.detail.DetailScreen
 import com.example.proffera.ui.screen.home.HomeScreen
-import com.example.proffera.ui.screen.profile.ProfileScreen
 
 fun NavGraphBuilder.mainGraph(drawerState: DrawerState, navController: NavController) {
     navigation(startDestination = MainScreen.HomeScreen.name, route = NavRoutes.MainRoute.name) {
@@ -19,8 +19,8 @@ fun NavGraphBuilder.mainGraph(drawerState: DrawerState, navController: NavContro
                 navController.navigate(Screen.DetailScreen.createRoute(projectId))
             })
         }
-        composable(MainScreen.ProfileScreen.name) {
-            ProfileScreen(drawerState)
+        composable(MainScreen.BookmarksScreen.name) {
+            BookmarksScreen(drawerState)
         }
 
         composable(

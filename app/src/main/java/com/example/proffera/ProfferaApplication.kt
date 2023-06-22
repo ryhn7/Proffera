@@ -76,7 +76,7 @@ fun ProfferaApplication(
                             popUpTo(NavRoutes.MainRoute.name)
                         }
                     }
-                    MainScreen.ProfileScreen -> {
+                    MainScreen.BookmarksScreen -> {
                         Log.d(
                             ContentValues.TAG,
                             "ProfferaApplication: ${onUserPickedOption.name} Screen"
@@ -125,12 +125,12 @@ object DrawerParams {
             R.drawable.ic_home,
             R.string.drawer_home_description
         ),
-//        AppDrawerItemInfo(
-//            MainScreen.ProfileScreen,
-//            R.string.drawer_bookmarks,
-//            R.drawable.ic_info,
-//            R.string.drawer_bookmarks_description
-//        ),
+        AppDrawerItemInfo(
+            MainScreen.BookmarksScreen,
+            R.string.drawer_bookmarks,
+            R.drawable.ic_info,
+            R.string.drawer_bookmarks_description
+        ),
         AppDrawerItemInfo(
             MainScreen.Logout,
             R.string.drawer_logout,
