@@ -9,6 +9,7 @@ import com.example.proffera.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +24,9 @@ class HomeViewModel @Inject constructor(
     private val _bookmarkedProcurementIds: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
     val bookmarkedProcurementIds: StateFlow<Set<String>> = _bookmarkedProcurementIds
 
+    init {
+        getBookmarkedProcurementIds()
+    }
 
     fun getAllProcurements() {
         viewModelScope.launch {
@@ -66,6 +70,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             profferaRepo.deleteBookmarkedProcurement(procurement)
             _bookmarkedProcurementIds.value -= procurement.id
+        }
+    }
+
+    fun getBookmarkedProcurementIds() {
+        viewModelScope.launch {
+            val bookmarkedProcurements = profferaRepo.getBookmarkedProcurements().first()
+            val bookmarkedIds = bookmarkedProcurements.map { it.id }.toSet()
+            _bookmarkedProcurementIds.value = bookmarkedIds
         }
     }
 }

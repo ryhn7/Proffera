@@ -100,6 +100,7 @@ fun HomeScreen(
                             searchQuery = searchQuery.value,
                             onSearchQueryChanged = { newQuery -> searchQuery.value = newQuery },
                             onSearchPerform = { searchProcurements() },
+                            viewModel = viewModel
                         )
                     }
                     is UiState.Error -> {
