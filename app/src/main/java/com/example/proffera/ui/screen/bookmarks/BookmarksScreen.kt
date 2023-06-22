@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -26,7 +30,8 @@ import com.example.proffera.ui.theme.WhiteSmoke
 @Composable
 fun BookmarksScreen(
     drawerState: DrawerState,
-    bookmarksViewModel: BookmarksViewModel = hiltViewModel()
+    bookmarksViewModel: BookmarksViewModel = hiltViewModel(),
+    navigateToDetail: (String) -> Unit
 ) {
 
     val scrollState = rememberLazyListState()
@@ -70,41 +75,65 @@ fun BookmarksScreen(
                 .fillMaxSize()
                 .background(WhiteSmoke)
         ) {
-            val bookmarkedProcurements by bookmarksViewModel.bookmarkedProcurements.collectAsState()
+          BookmarkContent(scrollState = scrollState,
+              onClickDetail = navigateToDetail, bookmarksViewModel)
+        }
+    }
+}
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .background(WhiteSmoke)
-                    .padding(top = 80.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
-                state = scrollState
-            ) {
-                itemsIndexed(bookmarkedProcurements) { index, procurement ->
-                    // Extract the necessary data from ProcurementEntity
-                    val projectName = procurement.projectName
-                    val winnerVendor = procurement.winnerVendor
-                    val city = procurement.city
-                    val projectCost = procurement.projectCost
-                    val projectDescription = procurement.projectDescription
-                    val projectStatus = procurement.projectStatus
-                    val projectDuration = procurement.projectDuration
-                    val isBookmarked =
-                        true // Assuming all bookmarked procurements are marked as true
+@Composable
+fun BookmarkContent(
+    scrollState: LazyListState,
+    onClickDetail: (String) -> Unit = {},
+    viewModel: BookmarksViewModel = hiltViewModel(),
+) {
+    val bookmarkedProcurements by viewModel.bookmarkedProcurements.collectAsState()
 
-                    // Display the bookmarked procurement item
-                    HomeProcurement(
-                        projectName = projectName,
-                        winnerVendor = winnerVendor,
-                        city = city,
-                        projectCost = projectCost,
-                        projectDescription = projectDescription,
-                        projectStatus = projectStatus,
-                        projectDuration = projectDuration,
-                        isBookmarked = isBookmarked,
-                        onBookmarkClick = { /*TODO*/ }
-                    )
-                }
+    if (bookmarkedProcurements.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Belum ada Project yang disimpan",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+    } else {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .background(WhiteSmoke)
+                .padding(top = 80.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
+            state = scrollState
+        ) {
+            itemsIndexed(bookmarkedProcurements) { index, procurement ->
+                // Extract the necessary data from ProcurementEntity
+                val projectName = procurement.projectName
+                val winnerVendor = procurement.winnerVendor
+                val city = procurement.city
+                val projectCost = procurement.projectCost
+                val projectDescription = procurement.projectDescription
+                val projectStatus = procurement.projectStatus
+                val projectDuration = procurement.projectDuration
+                val isBookmarked =
+                    true // Assuming all bookmarked procurements are marked as true
+
+                // Display the bookmarked procurement item
+                HomeProcurement(
+                    projectName = projectName,
+                    winnerVendor = winnerVendor,
+                    city = city,
+                    projectCost = projectCost,
+                    projectDescription = projectDescription,
+                    projectStatus = projectStatus,
+                    projectDuration = projectDuration,
+                    isBookmarked = isBookmarked,
+                    onBookmarkClick = { /*TODO*/ },
+                )
             }
         }
     }
+
 }

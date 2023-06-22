@@ -20,7 +20,9 @@ fun NavGraphBuilder.mainGraph(drawerState: DrawerState, navController: NavContro
             })
         }
         composable(MainScreen.BookmarksScreen.name) {
-            BookmarksScreen(drawerState)
+            BookmarksScreen(drawerState, navigateToDetail = { projectId ->
+                navController.navigate(Screen.DetailScreen.createRoute(projectId))
+            })
         }
 
         composable(
