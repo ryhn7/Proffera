@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.proffera.R
+import com.example.proffera.data.local.entity.ProcurementEntity
 import com.example.proffera.data.remote.response.DataItem
 import com.example.proffera.ui.common.UiState
 import com.example.proffera.ui.components.HomeProcurement
@@ -98,7 +99,7 @@ fun HomeScreen(
                             onClickDetail = navigateToDetail,
                             searchQuery = searchQuery.value,
                             onSearchQueryChanged = { newQuery -> searchQuery.value = newQuery },
-                            onSearchPerform = { searchProcurements() }
+                            onSearchPerform = { searchProcurements() },
                         )
                     }
                     is UiState.Error -> {
@@ -119,6 +120,7 @@ fun HomeScreenContent(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     onSearchPerform: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -145,6 +147,7 @@ fun HomeScreenContent(
             )
         }
         items(listProcurement) { procurement ->
+            val isProcurementBookmarked = viewModel.bookmarkedProcurementIds.collectAsState().value.contains(procurement.id)
             HomeProcurement(
                 projectName = procurement.data.namaPaket,
                 winnerVendor = procurement.data.namaPemenang,
@@ -153,7 +156,15 @@ fun HomeScreenContent(
                 projectDescription = procurement.data.description ?: "",
                 projectStatus = "Dalam Review",
                 projectDuration = "6 Bulan",
-                onBookmarkClick = {},
+                isBookmarked = isProcurementBookmarked,
+                onBookmarkClick = {
+                    val procurementEntity = convertToProcurementEntity(procurement)
+                    if (isProcurementBookmarked) {
+                        viewModel.deleteBookmarked(procurementEntity)
+                    } else {
+                        viewModel.saveBookmarked(procurementEntity)
+                    }
+                },
                 modifier = Modifier
                     .clickable {
                         Log.d(TAG, "HomeScreenContent: ${procurement.id}")
@@ -163,6 +174,28 @@ fun HomeScreenContent(
             )
         }
     }
+}
+
+fun convertToProcurementEntity(dataItem: DataItem): ProcurementEntity {
+    val id = dataItem.id
+    val projectName = dataItem.data.namaPaket
+    val winnerVendor = dataItem.data.namaPemenang
+    val city = dataItem.data.workingAddress
+    val projectCost = dataItem.data.pagu.toString()
+    val projectDescription = dataItem.data.description ?: ""
+    val projectStatus = "Dalam Review"
+    val projectDuration = "6 Bulan"
+
+    return ProcurementEntity(
+        id = id,
+        projectName = projectName,
+        winnerVendor = winnerVendor,
+        city = city,
+        projectCost = projectCost,
+        projectDescription = projectDescription,
+        projectStatus = projectStatus,
+        projectDuration = projectDuration
+    )
 }
 
 

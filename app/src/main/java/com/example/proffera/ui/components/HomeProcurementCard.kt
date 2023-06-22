@@ -11,7 +11,7 @@ import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,10 +35,11 @@ fun HomeProcurement(
     projectDescription: String,
     projectStatus: String,
     projectDuration: String,
+    isBookmarked: Boolean,
     onBookmarkClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isBookmarked by remember { mutableStateOf(false) }
+//    var isBookmarked by remember { mutableStateOf(false) }
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
@@ -96,7 +97,6 @@ fun HomeProcurement(
                         .weight(1f) // Added weight modifier
                         .wrapContentWidth(Alignment.End)
                         .clickable { // Handle bookmark click event
-                            isBookmarked = !isBookmarked
                             onBookmarkClick()
                         }
                 )

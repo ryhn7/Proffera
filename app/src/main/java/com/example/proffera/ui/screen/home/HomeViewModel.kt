@@ -3,6 +3,7 @@ package com.example.proffera.ui.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proffera.data.ProfferaRepo
+import com.example.proffera.data.local.entity.ProcurementEntity
 import com.example.proffera.data.remote.response.DataItem
 import com.example.proffera.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,10 @@ class HomeViewModel @Inject constructor(
     private val _procurementsState: MutableStateFlow<UiState<List<DataItem>>> =
         MutableStateFlow(UiState.Loading)
     val procurementsState: StateFlow<UiState<List<DataItem>>> = _procurementsState
+
+    private val _bookmarkedProcurementIds: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
+    val bookmarkedProcurementIds: StateFlow<Set<String>> = _bookmarkedProcurementIds
+
 
     fun getAllProcurements() {
         viewModelScope.launch {
@@ -47,6 +52,20 @@ class HomeViewModel @Inject constructor(
                         _procurementsState.value = UiState.Error(it.message ?: "An error occurred")
                     }
                 }
+        }
+    }
+
+    fun saveBookmarked(procurement: ProcurementEntity) {
+        viewModelScope.launch {
+            profferaRepo.saveBookmarkedProcurement(procurement)
+            _bookmarkedProcurementIds.value += procurement.id
+        }
+    }
+
+    fun deleteBookmarked(procurement: ProcurementEntity) {
+        viewModelScope.launch {
+            profferaRepo.deleteBookmarkedProcurement(procurement)
+            _bookmarkedProcurementIds.value -= procurement.id
         }
     }
 }

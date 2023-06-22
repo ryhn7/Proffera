@@ -1,5 +1,7 @@
 package com.example.proffera.data
 
+import com.example.proffera.data.local.entity.ProcurementEntity
+import com.example.proffera.data.local.room.ProcurementDao
 import com.example.proffera.data.remote.response.DetailProcurementResponse
 import com.example.proffera.data.remote.response.ProcurementResponse
 import com.example.proffera.data.remote.retrofit.ApiService
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 class ProfferaRepo @Inject constructor(
     private val apiService: ApiService,
-    private val authRepo: AuthRepo
+    private val authRepo: AuthRepo,
+    private val procurementDao: ProcurementDao
 ) {
     suspend fun getAllProcurements(
 
@@ -77,5 +80,25 @@ class ProfferaRepo @Inject constructor(
 
     private fun generateToken(token: String): String {
         return "Bearer $token"
+    }
+
+    fun isBookmarkedProcurement(title: String): Flow<Boolean> {
+        return procurementDao.isBookmarkedProcurement(title)
+    }
+
+    fun getBookmarkedProcurements(): Flow<List<ProcurementEntity>> {
+        return procurementDao.getAllProcurements()
+    }
+
+    suspend fun deleteBookmarkedProcurement(procurementEntity: ProcurementEntity) {
+        procurementDao.delete(procurementEntity)
+    }
+
+    suspend fun saveBookmarkedProcurement(procurementEntity: ProcurementEntity) {
+        procurementDao.insert(procurementEntity)
+    }
+
+    companion object {
+        private const val TAG = "ProfferaRepo"
     }
 }
